@@ -1,0 +1,31 @@
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.prod
+    ports:
+      - "80:5173"
+    depends_on:
+      - server
+    environment:
+      - VITE_API_URL=http://localhost
+    networks:
+      - mern-network
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - NODE_ENV=production
+      - MONGO_URI=mongodb+srv://chamaraanti1_db_user:chamara2002@cluster0.hb3luwv.mongodb.net/luxemarket?retryWrites=true&w=majority&appName=Cluster0
+    restart: always
+    networks:
+      - mern-network
+
+networks:
+  mern-network:
+    driver: bridge
